@@ -1,0 +1,217 @@
+<div style="width: 100%" class="col-md-12 mt-3">
+  <div class="container font-italic text-center">
+    <h2 class="">--- CUSTOMER MANAGEMENT ---</h2>
+  </div>
+  <!--  <div class="container d-flex mb-3">-->
+  <!--    <div class="search row-cols-1 col-md-3 row-col-sm-6 second-sub-nav p-0">-->
+  <!--      <div class="form-inline">-->
+  <!--        <label for="searchStartDes" class="mr-1 font-weight-bold">-->
+  <!--          <i class="fa-solid fa-flag-checkered"></i>-->
+  <!--        </label>-->
+  <!--        <input [(ngModel)]="startDesSearch" type="text" id="searchStartDes" class="form-control border-secondary"-->
+  <!--               placeholder="Enter start destination...">-->
+  <!--      </div>-->
+  <!--    </div>-->
+  <!--    <div class="search row-cols-1 col-md-3 second-sub-nav p-0">-->
+  <!--      <div class="form-inline">-->
+  <!--        <label for="searchEndDes" class="mr-1 font-weight-bold">-->
+  <!--          <i class="fa-solid fa-location-dot"></i>-->
+  <!--        </label>-->
+  <!--        <input [(ngModel)]="endDesSearch" type="text" id="searchEndDes" class="form-control border-secondary"-->
+  <!--               placeholder="Enter end destination...">-->
+  <!--      </div>-->
+  <!--    </div>-->
+  <!--    <div class="search row-cols-1 col-md-2 row-col-sm-6 second-sub-nav mr-2 p-0 text-left">-->
+  <!--      <div class="form-inline">-->
+  <!--        <label for="searchStartDate" class="mr-1 font-weight-bold">-->
+  <!--          <i class="fa-solid fa-hourglass-start"></i>-->
+  <!--        </label>-->
+  <!--        <input [(ngModel)]="startDateSearch" type="date" id="searchStartDate" class="form-control border-secondary"-->
+  <!--               placeholder="Enter start destination...">-->
+  <!--      </div>-->
+  <!--    </div>-->
+  <!--    <div class="search row-cols-1 col-md-2 row-col-sm-6 second-sub-nav p-0 mr-2">-->
+  <!--      <div class="form-inline text-left">-->
+  <!--        <label for="searchEndDes" class="mr-1 font-weight-bold">-->
+  <!--          <i class="fa-solid fa-hourglass-end"></i>-->
+  <!--        </label>-->
+  <!--        <input [(ngModel)]="endDateSearch" type="date" id="searchEndDate" class="form-control border-secondary"-->
+  <!--               placeholder="Enter end destination...">-->
+  <!--      </div>-->
+  <!--    </div>-->
+  <!--    <div class="col-md-1 form-inline">-->
+  <!--      <button class="btn btn-success" (click)="search()">-->
+  <!--        <i class="fa-solid fa-magnifying-glass"></i></button>-->
+  <!--    </div>-->
+  <!--  </div>-->
+  <div class="container-fluid" style="clear: both">
+    <table class="table table-striped" id="tableCustomer"
+           style="border-color: #a71d2a; margin: 0; background-color: white; font-size: 0.9em">
+      <thead class="thead-dark">
+      <tr>
+        <th>#</th>
+        <th>Tên</th>
+        <th>Số điện thoại</th>
+        <th>Dòng xe</th>
+        <th>Ngày tạo</th>
+        <th>Ngày cập nhật</th>
+        <th>Huyện</th>
+        <th>Thương hiệu</th>
+        <th>TG / TT</th>
+        <th>Nguồn</th>
+        <th>Trạng thái</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let customer of customerList  | paginate : { itemsPerPage: 5, currentPage: page }, index as idx" (click)="showInformationList(customer.id)">
+        <td>{{idx + 1}}</td>
+        <td>{{customer.name}}</td>
+        <td>{{customer.firstPhoneNumber}}</td>
+        <td>{{customer.car.name}}</td>
+        <td>{{customer.createDate }}</td>
+        <td>{{customer.updateDate }}</td>
+        <td>{{customer.district.name }}</td>
+        <td>{{customer.car.carLabel.manufacture.name}}</td>
+        <td>{{customer.paymentMethod }}</td>
+        <td>{{customer.informationSource}}</td>
+        <td>{{customer.customerStatus}}</td>
+        <td>
+          <a class="btn btn-outline-warning btn-sm ml-1 mr-1"
+             (click)="getCustomerById(customer.id)" routerLink="/customer/update/{{customer.id}}">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </a>
+        </td>
+        <td>
+          <a class="btn btn-outline-danger btn-sm ml-1 mr-1" (click)="getCustomerById(customer.id)"
+             data-toggle="modal" data-target="#deleteModal">
+            <i class="fa-solid fa-trash"></i>
+          </a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <table *ngIf="informationSheetList" class="table table-striped information-table"
+           style="border-color: #a71d2a; background-color: white; font-size: 0.9em">
+      <thead class="" style="background: #28a745">
+      <tr>
+        <th class="col-1">#</th>
+        <th class="col-2">Ngày cập nhật</th>
+        <th class="col-2">Dòng xe</th>
+        <th class="col-1">Màu sắc</th>
+        <th class="col-1">Năm SX</th>
+        <th class="col-4">Nội dung</th>
+        <th class="col-1">Trạng thái</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let info of informationSheetList, index as idx">
+        <td>{{idx + 1}}</td>
+        <td>{{info.createDate}}</td>
+        <td>{{info.carName}}</td>
+        <td>{{info.carColor}}</td>
+        <td>{{info.yearOfManufacture }}</td>
+        <td>{{info.content }}</td>
+        <td>{{info.customerStatus }}</td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+<!--    <div style="justify-content: space-around;display: flex;">-->
+<!--      <pagination-controls (pageChange)="page = $event" class=" page-item"></pagination-controls>-->
+<!--    </div>-->
+  <div *ngIf="customerList.length != 0" class="row mb-0" style="margin-top: 1rem;">
+    <div class="w-100 d-flex justify-content-center">
+      <pagination-controls (pageChange)="getPage(page = $event)"
+                           previousLabel="Trước"
+                           nextLabel="Sau"
+                           autoHide="true"
+                           maxSize=7>
+      </pagination-controls>
+    </div>
+  </div>
+</div>
+
+<!-- Modal book customer -->
+
+<!--<div *ngIf="checkcustomer" class="modal fade" id="bookingModal" tabindex="-1" role="dialog"-->
+<!--     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">-->
+<!--  <div class="modal-dialog modal-dialog-centered" role="document">-->
+<!--    <div class="modal-content">-->
+<!--      <div class="modal-header bg-success">-->
+<!--        <h5 class="modal-title" id="exampleModalLongTitle">CONFIRM BEFORE BOOKING customer?</h5>-->
+<!--        <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--          <span aria-hidden="true">&times;</span>-->
+<!--        </button>-->
+<!--      </div>-->
+<!--      <div id="confirmBooking">-->
+<!--        <div class="modal-body">-->
+<!--          <div>-->
+<!--            <p class="font-italic font-weight-bold">Do you want booking this customer?</p>-->
+<!--            <p>-->
+<!--              <span>Start Destination: </span>-->
+<!--              <span class="font-weight-bold">{{startDes}}</span>-->
+<!--            </p>-->
+<!--            <p>-->
+<!--              <span>End Destination: </span>-->
+<!--              <span class="font-weight-bold">{{endDes}}</span>-->
+<!--            </p>-->
+<!--            <p>-->
+<!--              <span>Start Date: </span>-->
+<!--              <span class="font-weight-bold">{{startDate}}</span>-->
+<!--            </p>-->
+<!--            <p>-->
+<!--              <span>Start Hour: </span>-->
+<!--              <span class="font-weight-bold">{{startHour}}</span>-->
+<!--            </p>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="modal-footer">-->
+<!--          <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>-->
+<!--          <button (click)="bookingcustomer()" data-dismiss="modal" class="btn btn-success delete">YES</button>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+
+<!-- Modal Delete-->
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+        <h5 class="modal-title">XÁC NHẬN XÓA?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id="confirmDelete">
+        <div class="modal-body">
+          <div>
+            <p class="font-italic font-weight-bold">Bạn chắc chắn muốn xóa khách hàng này?</p>
+            <p>
+              <span>TÊN KHÁCH HÀNG: </span>
+<!--              <span class="font-weight-bold">{{startDesSearch}}</span>-->
+            </p>
+            <p>
+              <span>DÒNG XE: </span>
+<!--              <span class="font-weight-bold">{{startHour}}</span>-->
+            </p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
+          <button (click)="deletecustomer()" data-dismiss="modal" class="btn btn-success delete">YES</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<!--</div>-->
+
+

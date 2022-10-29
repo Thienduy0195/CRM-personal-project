@@ -1,0 +1,20 @@
+.login,
+.image {
+  min-height: 100vh;
+}
+
+.bg-image {
+  background-image: url('https://cdn-img.thethao247.vn/upload/hiep95/2019/10/09/72159734-10221081737101214-6610013913322881024-o.jpg');
+  background-size: cover;
+  background-position: center center;
+}
+
+.none-line{
+  text-decoration: none;
+}
+
+.center-div{
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}

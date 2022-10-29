@@ -1,0 +1,267 @@
+<body>
+<div class="login-form">
+  <h5 class="text-center mb-4 mt-3 title">THÊM MỚI KHÁCH HÀNG</h5>
+  <form [formGroup]="customerForm">
+
+    <div class="row d-flex mb-2">
+
+      <div class="col-md-4 col-sm-12">
+        <div class="text-box">
+          <label style="color: white;">
+            HỌ VÀ TÊN
+            <span class="text-danger">*</span>
+            <span class="text-danger" *ngIf="customerForm.controls.name.hasError('pattern') &&
+                                                  (customerForm.controls.name.dirty || customerForm.controls.name.touched)">
+                      Tên sai định dạng.
+                    </span>
+            <span class="text-danger" *ngIf="customerForm.controls.name.hasError('required') &&
+                                                  (customerForm.controls.name.dirty || customerForm.controls.name.touched)">
+                      Bắt buộc.
+                    </span>
+          </label>
+          <input type="text" class="form-control input" placeholder="Họ và tên"
+                 formControlName="name">
+        </div>
+      </div>
+
+      <div class="col-md-4 col-sm-12 row">
+        <div class="col-md-6 col-sm-12">
+          <div class="text-box">
+            <label style="color: white;">
+              ĐIỆN THOẠI
+              <span class="text-danger">*</span>
+              <span *ngIf="isExitsPhone && !getFirstPhoneNumber().invalid" class="text-danger">Đã tồn tại</span>
+              <span class="text-danger"
+                    *ngIf="getFirstPhoneNumber().invalid && (getFirstPhoneNumber().touched || getFirstPhoneNumber().dirty) && getFirstPhoneNumber().errors.required">
+                        Bắt buộc.
+                      </span>
+              <span class="text-danger"
+                    *ngIf="getFirstPhoneNumber().invalid && (getFirstPhoneNumber().touched || getFirstPhoneNumber().dirty) && getFirstPhoneNumber().errors.pattern">
+          Sai định dạng.
+        </span>
+            </label>
+            <input type="text" class="form-control input" placeholder="0123456789" (keypress)="setCheckExistPhone($event.target.value)"
+                   formControlName="firstPhoneNumber" (keydown.enter)="checkPhoneNumber($event.target.value)" (keydown.tab)="checkPhoneNumber($event.target.value)" (keydown.end)="checkPhoneNumber($event.target.value)">
+          </div>
+        </div>
+
+        <div class="col-md-6 col-sm-12">
+          <div class="text-box">
+            <label style="color: white;">
+              ĐIỆN THOẠI 2
+              <span class="text-danger"
+                    *ngIf="getSecondPhoneNumber().invalid && (getSecondPhoneNumber().touched || getSecondPhoneNumber().dirty) && getSecondPhoneNumber().errors.pattern">
+          Sai định dạng.
+        </span>
+            </label>
+            <input type="tel" class="form-control input" placeholder="0123456789"
+                   formControlName="secondPhoneNumber" (keydown.enter)="checkPhoneNumber($event.target.value)">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-sm-12 row">
+
+        <div class="col-md-4 col-sm-12">
+          <div>
+            <div class="text-box">
+              <label style="color: white">
+                GIỚI TÍNH
+              </label>
+              <select class="form-select select input" aria-haspopup="true" formControlName="gender">
+                <option value="" selected>N/A</option>
+                <option value="Nam">Nam</option>
+                <option value="Nữ">Nữ</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-12">
+          <div class="text-box">
+            <label style="color: white">
+              HUYỆN
+              <span class="text-danger">*</span>
+              <span class="text-danger" *ngIf="customerForm.controls.district.hasError('required') &&
+                                      (customerForm.controls.district.dirty || customerForm.controls.district.touched)">
+              Bắt buộc.
+            </span>
+            </label>
+            <select class="form-select select input" aria-haspopup="true" formControlName="district">
+              <option value="">N/A</option>
+              <option *ngFor="let district of districtList">{{district.name}}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-12 text-box">
+          <label style="color: white;">
+            NGÀY SINH
+          </label>
+          <input type="date" class="form-control input" placeholder=""
+                 formControlName="dateOfBirth">
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="row d-flex mb-2">
+      <div class="col-md-4 col-sm-12">
+        <div class="text-box">
+          <label style="color: white;">
+            ĐỊA CHỈ
+          </label>
+          <input type="text" class="form-control address input" placeholder="Tam Xuân II - Núi Thành - Quảng Nam"
+                 formControlName="address">
+        </div>
+      </div>
+
+      <div class="col-md-4 col-sm-12 row">
+        <div class="col-md-6 col-sm-12">
+          <div class="text-box">
+            <label style="color: white;">
+              EMAIL
+            </label>
+            <input type="text" class="form-control input" placeholder="nguyenvana@gmail.com"
+                   formControlName="email">
+          </div>
+        </div>
+
+        <div class="col-md-6 col-sm-12">
+          <div class="text-box">
+            <label style="color: white">
+              NGHỀ NGHIỆP
+            </label>
+            <select class="form-select select input" aria-haspopup="true" formControlName="occupation">
+              <option value="" selected>Vui lòng chọn</option>
+              <option value="Giáo dục" selected>Giáo dục</option>
+              <option value="Công An">Công An</option>
+              <option value="Quản lý nhà nước">Quản lý nhà nước</option>
+              <option value="Kinh doanh">Kinh doanh</option>
+              <option value="Khác">Khác</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-sm-12 row d-flex">
+
+        <div class="col-md-4 col-sm-5">
+          <div>
+            <div class="text-box">
+              <label style="color: white">
+                BÁN
+              </label>
+              <select class="form-select select input" aria-haspopup="true" formControlName="salesMethod">
+                <option value="Lẻ">Lẻ</option>
+                <option value="Lô">Lô</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-5">
+          <div class="text-box">
+            <label style="color: white">
+              TM/TG
+            </label>
+            <select class="form-select select input" aria-haspopup="true" formControlName="paymentMethod">
+              <option value="TM">TM</option>
+              <option value="TG">TG</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-12 text-box">
+          <label style="color: white;">
+            NGUỒN
+          </label>
+          <select class="form-select select input" aria-haspopup="true" formControlName="informationSource">
+            <option value="Internet">Internet</option>
+            <option value="Giới thiệu">Giới thiệu</option>
+            <option value="Công ty">Công ty</option>
+            <option value="Điện thoại">Điện thoại</option>
+            <option value="Khác">Khác</option>
+          </select>
+        </div>
+
+      </div>
+    </div>
+    <div class="container-fluid" style="clear: both">
+      <table class="table table-striped" id="tableCustomer"
+             style="border-color: #a71d2a; margin: 0; background-color: white; font-size: 0.9em">
+        <thead class="thead-dark">
+        <tr>
+          <th class="col-md-1 col-sm-3">Ngày tiếp</th>
+          <th class="col-md-1 col-sm-3">Thương hiệu</th>
+          <th class="col-md-2 col-sm-3">Dòng xe
+            <span class="text-danger">*</span>
+            <span class="text-danger" *ngIf="customerForm.controls.car.hasError('required') &&
+                                      (customerForm.controls.car.dirty || customerForm.controls.car.touched)">
+              Bắt buộc.
+            </span>
+          </th>
+          <th class="col-md-1 col-sm-3">Màu xe</th>
+          <th class="col-md-1 col-sm-3">Năm SX</th>
+          <th class="col-md-5 col-sm-3">Nội dung tiếp xúc
+            <span class="text-danger">*</span>
+            <span class="text-danger" *ngIf="customerForm.controls.content.hasError('required') &&
+                                      (customerForm.controls.content.dirty || customerForm.controls.content.touched)">
+              Cần nhập nội dung tiếp xúc.
+            </span>
+          </th>
+          <th class="col-md-1 col-sm-3">Trạng thái</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td class="col-md-1 col-sm-3">{{createDate}}</td>
+          <td class="col-md-1 col-sm-3">
+            <select class="select w-100" aria-haspopup="true" (change)="getCarListByManufactureId($event.target.value)">
+              <option *ngFor="let manufacture of manufactureList"
+                      value="{{manufacture.id}}">{{manufacture.name}}</option>
+            </select>
+          </td>
+          <td class="col-md-2 col-sm-3">
+            <select class="select w-100" aria-haspopup="true" formControlName="car">
+              <option value="">Vui lòng chọn</option>
+              <option [ngValue]="car" *ngFor="let car of carList">{{car.name}}</option>
+            </select>
+          </td>
+          <td class="col-md-1 col-sm-3">
+            <select class="select" aria-haspopup="true" formControlName="carColor">
+              <option value="">Chọn</option>
+              <option value="{{color}}" *ngFor="let color of carColorList">{{color}}</option>
+            </select>
+          </td>
+          <td class="col-md-1 col-sm-3">
+            <select class="select" aria-haspopup="true" formControlName="yearOfManufacture">
+              <option [selected]="currentYear==year" *ngFor="let year of yearList">{{year}}</option>
+            </select>
+          </td>
+          <td class="col-md-5 col-sm-3"><input class="w-100 border-secondary" type="text" formControlName="content">
+          </td>
+          <td class="col-md-1 col-sm-3">
+            <select class="select" aria-haspopup="true" formControlName="customerStatus">
+              <option *ngFor="let status of customerStatusList">{{status}}</option>
+            </select>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="space-between mb-3">
+      <button type="button" class="btn btn-outline-secondary login-btn text-light"
+              (click)="cancel()" style="width: 49%">
+        Hủy bỏ
+      </button>
+      <button type="button" class="btn login-btn text-light" [disabled]="customerForm.invalid"
+              (click)="submit()" style="width: 49%; background: #0d6efd">
+        Đăng ký
+      </button>
+    </div>
+  </form>
+</div>
+</body>

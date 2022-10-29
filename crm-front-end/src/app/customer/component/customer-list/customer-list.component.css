@@ -1,0 +1,15 @@
+.table td {
+  padding: 0.3em 0.75em;
+}
+
+.information-table th {
+  padding: 0.2em 0.2em;
+}
+
+.information-table td {
+  padding: 0.2em 0.2em;
+}
+
+.information-table{
+  margin-top: 1em;
+}
